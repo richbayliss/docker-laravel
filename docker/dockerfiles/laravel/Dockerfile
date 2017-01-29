@@ -1,5 +1,5 @@
 ####################################
-# PHPDocker.io PHP 7.1 / CLI image #
+# A Dockerfile of many sources...
 ####################################
 
 FROM phusion/baseimage
