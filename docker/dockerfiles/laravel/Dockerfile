@@ -47,12 +47,17 @@ RUN sed -i "/listen = .*/c\listen = [::]:9000" /etc/php/7.1/fpm/pool.d/www.conf 
 # Open up fcgi port
 EXPOSE 9000
 
+# Add our PHP-FPM service
 RUN mkdir /etc/service/php-fpm
 ADD dockerfiles/laravel/php-fpm.sh /etc/service/php-fpm/run
 RUN chmod a+x /etc/service/php-fpm/run
 
+# Add our Laravel queue processor service
 RUN mkdir /etc/service/artisan-queue
 ADD dockerfiles/laravel/artisan-queue.sh /etc/service/artisan-queue/run
 RUN chmod a+x /etc/service/artisan-queue/run
+
+# Add our Laravel scheduled task processing job
+RUN echo "* * * * * www-data php /app/artisan schedule:run >/dev/null 2>&1\n" >> /etc/cron.d/artisan-schedule
 
 CMD ["/sbin/my_init"]
