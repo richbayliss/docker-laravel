@@ -15,8 +15,13 @@ services:
     build:
       context: ../
       dockerfile: dockerfiles/laravel/Dockerfile
+    links:
+      - "cache:redis"
     volumes_from:
       - "data"
+
+  cache:
+    image: redis
 
   data:
     image: tianon/true
